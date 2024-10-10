@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // import { onAuthStateChanged } from 'firebase/auth';
 // Screens
 import DashboardScreen from '../screens/DashboardScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -66,7 +67,7 @@ const Navigation = () => {
 
                 <Tab.Screen
                     name="Profile"
-                    component={DashboardScreen}
+                    component={ProfileScreen}
                     options={{
                         headerShown: false,
                     }}
