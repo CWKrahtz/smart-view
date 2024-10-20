@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Button, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
-import * as FileSystem from 'expo-file-system';
+import { analyzeImage, saveImage } from '../service/imageService';
 
 function DashboardScreen({ navigation }) {
 
@@ -25,43 +24,22 @@ function DashboardScreen({ navigation }) {
         }
     }
 
-    const analyzeImage = async () => {
+    const handleAnalyzeImage = async () => {
         try {
             if (!image) {
                 alert('Please provide an image to analyze');
                 return;
             }
-
-            //API KEY to Cloud Vision
-            const apiKey = 'AIzaSyBZmpGYTAQH2bf9Rp7OcRRt0Y7bWwWoric';
-            const apiURL = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
-
-            // read image from the local URI and convert to base64
-            const base64ImageData = await FileSystem.readAsStringAsync(image, {
-                encoding: FileSystem.EncodingType.Base64,
-            });
-
-            const reqData = {
-                requests: [
-                    {
-                        image: {
-                            content: base64ImageData,
-                        },
-                        features: [{ type: 'LABEL_DETECTION', maxResults: 5 }],
-                    },
-                ],
-            };
-
-            const apiResponse = await axios.post(apiURL, reqData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            setLabels(apiResponse.data.responses[0].labelAnnotations);
+            const result = await analyzeImage(image);
+            setLabels(result);
+            // console.log(result)
+            // const tags = labels
+            if (result) {
+                await saveImage(result, image)
+            }
 
         } catch (error) {
-            console.log('Error analyzing image: ', error.response ? error.response.data : error.message);
-            alert('Error analyzing image: ', error.response ? error.response.data.error.message : error.message);
+            alert('Error analyzing image: ' + error.message);
         }
     }
 
@@ -75,7 +53,7 @@ function DashboardScreen({ navigation }) {
                 <Pressable onPress={pickImage} style={styles.btn} >
                     <Text style={styles.btn_text}>Pick an image from your galary</Text>
                 </Pressable>
-                <Pressable onPress={analyzeImage} style={styles.btn} >
+                <Pressable onPress={handleAnalyzeImage} style={styles.btn} >
                     <Text style={styles.btn_text}>Analyze Selected Image</Text>
                 </Pressable>
                 {labels.length > 0 ?
