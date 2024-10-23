@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 import * as ImagePicker from 'expo-image-picker';
-import { analyzeImage, saveImage } from '../service/imageService';
+import { analyzeImage, saveImage, uploadImageToFirebase } from '../service/imageService';
 
 function DashboardScreen({ navigation }) {
 
@@ -30,12 +30,17 @@ function DashboardScreen({ navigation }) {
                 alert('Please provide an image to analyze');
                 return;
             }
+
+            //new code
+            // Step 1: Upload image to Firebase Storage
+            const imageURL = await uploadImageToFirebase(image);
+
             const result = await analyzeImage(image);
             setLabels(result);
-            // console.log(result)
-            // const tags = labels
+
+            console.log("imageURL ", imageURL._location.path_)
             if (result) {
-                await saveImage(result, image)
+                await saveImage(result, imageURL._location.path_)
             }
 
         } catch (error) {

@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { Button, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
-import * as FileSystem from 'expo-file-system';
+import React from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 import { handleSignOut } from "../authServices";
 
 function ProfileScreen({ navigation }) {

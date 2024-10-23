@@ -4,16 +4,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-// auth
-// import { auth } from '../firebase';
-// import { onAuthStateChanged } from 'firebase/auth';
 // Screens
 import DashboardScreen from '../screens/DashboardScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
+// Auth
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
+import AlbumScreen from '../screens/AlbumScreen';
 
 // Navigations
 const Stack = createNativeStackNavigator();
@@ -48,6 +47,8 @@ const Navigation = () => {
                             iconName = focused ? 'home' : 'home-outline';
                         } else if (route.name === 'Profile') {
                             iconName = focused ? 'person' : 'person-outline';
+                        } else if (route.name === 'Album') {
+                            iconName = focused ? 'albums' : 'albums-outline';
                         }
                         return <Icon name={iconName} size={size} color={color} />;
                     },
@@ -68,6 +69,14 @@ const Navigation = () => {
                 <Tab.Screen
                     name="Profile"
                     component={ProfileScreen}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+
+                <Tab.Screen
+                    name="Album"
+                    component={AlbumScreen}
                     options={{
                         headerShown: false,
                     }}
