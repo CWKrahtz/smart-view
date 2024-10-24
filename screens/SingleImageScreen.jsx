@@ -1,52 +1,13 @@
 import React, { useState } from "react";
-import { Button, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import * as ImagePicker from 'expo-image-picker';
-import { analyzeImage, saveImage, uploadImageToFirebase } from '../service/imageService';
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native"
 
-function DashboardScreen({ navigation }) {
+function SingeImageScreen({ navigation ,route }) {
 
-    const [image, setImage] = useState(null);
-    const [labels, setLabels] = useState([])
+    // const [image, setImage] = useState(null);
+    // const [labels, setLabels] = useState([])
 
-    const pickImage = async () => {
-
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        console.log(result);
-
-        if (!result.canceled) {
-            setImage(result.assets[0].uri)
-        }
-    }
-
-    const handleAnalyzeImage = async () => {
-        try {
-            if (!image) {
-                alert('Please provide an image to analyze');
-                return;
-            }
-
-            //new code
-            // Step 1: Upload image to Firebase Storage
-            const imageURL = await uploadImageToFirebase(image);
-
-            const result = await analyzeImage(image);
-            setLabels(result);
-
-            console.log("imageURL ", imageURL)
-            if (result) {
-                await saveImage(result, imageURL)
-            }
-
-        } catch (error) {
-            alert('Error analyzing image: ' + error.message);
-        }
-    }
+    console.log(route.params)
+    {imageData}
 
     return (
         <ScrollView style={styles.container}>
@@ -55,12 +16,6 @@ function DashboardScreen({ navigation }) {
                 <View style={styles.image_container}>
                     {image && <Image source={{ uri: image }} style={styles.image} />}
                 </View>
-                <Pressable onPress={pickImage} style={styles.btn} >
-                    <Text style={styles.btn_text}>Pick an image from your galary</Text>
-                </Pressable>
-                <Pressable onPress={handleAnalyzeImage} style={styles.btn} >
-                    <Text style={styles.btn_text}>Analyze Selected Image</Text>
-                </Pressable>
                 {labels.length > 0 ?
                     (
                         <View>
@@ -165,4 +120,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DashboardScreen;
+export default SingeImageScreen;

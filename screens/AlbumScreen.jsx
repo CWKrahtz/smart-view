@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import { handleSignOut } from "../authServices";
 import { getAllImages } from "../service/imageService";
 import { useFocusEffect } from "@react-navigation/native";
-import { auth } from "../firebase";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 function AlbumScreen({ navigation }) {
@@ -21,32 +19,32 @@ function AlbumScreen({ navigation }) {
         }, [])
     );
 
-    // const handleGettingOfData = async () => {
-    //     setIsLoading(true);
-    //     var allData = await getAllImages();
-    //     setImageData(allData || []);  // Ensure compItems is an array
-    //     setIsLoading(false);
+    const handleGettingOfData = async () => {
+        setIsLoading(true);
+        var allData = await getAllImages();
+        setImageData(allData || []);  // Ensure compItems is an array
+        setIsLoading(false);
 
-    //     const storage = getStorage();
-    //     getDownloadURL(ref(storage, allData.image))
-    //     .then((url) => {
-    //         // `url` is the download URL for 'images/stars.jpg'
+        const storage = getStorage();
+        // getDownloadURL(ref(storage, allData.image))
+        // .then((url) => {
+        //     // `url` is the download URL for 'images/stars.jpg'
 
-    //         // console.log(allData);
-    //         setImageURL(url)
-        
-    //         // Or inserted into an <img> element
-    //         // const img = document.getElementById('myimg');
-    //         // img.setAttribute('src', url);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    // };
+        //     // console.log(allData);
+        //     setImageURL([...imageURL, url])
+
+        //     // Or inserted into an <img> element
+        //     // const img = document.getElementById('myimg');
+        //     // img.setAttribute('src', url);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+    };
 
 
-    const handleSingle = () => {
-        console.log("Image Selected")
+    const handleSingle = (image) => {
+        console.log("image Data:", image)
     }
 
     return (
@@ -55,13 +53,19 @@ function AlbumScreen({ navigation }) {
             <View style={styles.body}>
 
                 {
-                    imageData.map((data) => {
+                    imageData.map((image) => {
+
+                        // console.log("Image: ",image)
+
                         return (
-                            <View key={data.id}>
-                                <Text>{data.image}</Text>
-                                <Image
-                                    source={{ uri: imageURL }}  // Correct the source prop
-                                />
+                            <View key={image.id}>
+                                {/* <Pressable onPress={() => {handleSingle(image)}}> */}
+                                <Pressable something="hellow" onPress={() => navigation.navigate('SingleImage',{ image })}>
+                                    <Image style={{ width: 200, height: 200 }}
+                                        source={{ uri: `${image.image}` }}
+                                        props={image} 
+                                    />
+                                </Pressable>
                             </View>
                         );
                     })

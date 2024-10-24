@@ -7,23 +7,23 @@ import { Alert } from 'react-native';
 
 
 // // Upload Image To Firebase Storage
-// export const uploadImageToFirebase = async (uri) => {
-//     try {
-//         const response = await fetch(uri);  // Fetch image from local URI
-//         const blob = await response.blob(); // Convert to blob
+export const uploadImageToFirebase = async (uri) => {
+    try {
+        const response = await fetch(uri);  // Fetch image from local URI
+        const blob = await response.blob(); // Convert to blob
 
-//         const storage = getStorage();
-//         const storageRef = ref(storage, `images/${auth.currentUser.uid}/${Date.now()}`);  // Define storage path
+        const storage = getStorage();
+        const storageRef = ref(storage, `images/${auth.currentUser.uid}/${Date.now()}`);  // Define storage path
 
-//         await uploadBytes(storageRef, blob);  // Upload the image to Firebase Storage
-//         const downloadURL = await getDownloadURL(storageRef);  // Get the download URL
+        await uploadBytes(storageRef, blob);  // Upload the image to Firebase Storage
+        const downloadURL = await getDownloadURL(storageRef);  // Get the download URL
 
-//         return storageRef;  // Return the download URL
-//     } catch (error) {
-//         console.log('Error uploading image: ', error);
-//         throw error;
-//     }
-// };
+        return downloadURL;  // Return the download URL
+    } catch (error) {
+        console.log('Error uploading image: ', error);
+        throw error;
+    }
+};
 
 //Analyze Selected Image
 export const analyzeImage = async (image) => {
@@ -97,28 +97,28 @@ export const saveImage = async (tags, image) => {
 }
 
 // Get All Images - By User
-// export const getAllImages = (async () => {
-//     const uid = auth.currentUser.uid;    
-//     try {
-//         const userDocRef = doc(db, 'users', uid);
-//         const userImageDocRef = collection(userDocRef, 'imageUploads');
+export const getAllImages = (async () => {
+    const uid = auth.currentUser.uid;    
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userImageDocRef = collection(userDocRef, 'imageUploads');
 
-//         var q = query(userImageDocRef)
+        var q = query(userImageDocRef)
 
-//         var allitems = []
-//         const querySnapshot = await getDocs(q);
-//         querySnapshot.forEach((doc) => {
-//             // console.log(doc.id, " => ", doc.data());
-//             allitems.push({ ...doc.data(), id: doc.id })
-//         })
+        var allitems = []
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            // console.log(doc.id, " => ", doc.data());
+            allitems.push({ ...doc.data(), id: doc.id })
+        })
 
-//         console.log(allitems)
-//         return(allitems)
+        // console.log(allitems)
+        return(allitems)
         
-//     } catch (error) {
-//         //ALERT USER IF FAIL
-//         Alert.alert('Failed To Fetch Image');
-//     }
-// })
+    } catch (error) {
+        //ALERT USER IF FAIL
+        Alert.alert('Failed To Fetch Image');
+    }
+})
 
 //All Tags - Save tags in firestore database

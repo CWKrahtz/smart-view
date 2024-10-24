@@ -13,6 +13,7 @@ import SignupScreen from '../screens/SignupScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import AlbumScreen from '../screens/AlbumScreen';
+import SingeImageScreen from '../screens/SingleImageScreen';
 
 // Navigations
 const Stack = createNativeStackNavigator();
@@ -92,6 +93,14 @@ const Navigation = () => {
                     <Stack.Screen
                         name="Home"
                         component={Home}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name="SingleImage"
+                        component={SingeImageScreen}
                         options={{
                             headerShown: false,
                         }}
