@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import { handleSignOut } from "../authServices";
+import { handleSignOut } from "../service/authServices";
 
 function ProfileScreen({ navigation }) {
 

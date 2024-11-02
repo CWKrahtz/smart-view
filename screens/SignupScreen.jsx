@@ -1,5 +1,5 @@
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
-import { handleSignUp } from "../authServices";
+import { handleSignUp } from "../service/authServices";
 import { useCallback, useState } from "react";
 // import Input from "../components/Input";
 

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
-import { handleLogin } from "../authServices";
+import { handleLogin } from "../service/authServices";
 
 function LoginScreen({ navigation }) {
 

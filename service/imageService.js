@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
-import { addDoc, collection, doc, getDocs, query } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { auth, db } from '../firebase';
 import { Alert } from 'react-native';
@@ -87,6 +87,9 @@ export const saveImage = async (tags, image) => {
         // //ADD IMAGE URI AND LABELS/TAGS TO FIREBASE DATABASE UNDER USER'S uid
         await addDoc(userImageDocRef, imageURI);
 
+        // Save unique labels to filterUploads
+        await saveUniqueLabels(imageURI.labels);
+
         //ALERT USER IF IMAGE UPLOAD WAS SUCCESS.
         Alert.alert('Image Upload Success!!');
 
@@ -95,6 +98,32 @@ export const saveImage = async (tags, image) => {
         Alert.alert('Failed To Upload Image');
     }
 }
+
+// Save unique labels to filterUploads
+export const saveUniqueLabels = async (newLabels) => {
+    const uid = auth.currentUser.uid;
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const filterUploadsDocRef = doc(userDocRef, 'filterUploads', 'labels');
+
+        // Get existing labels
+        const filterUploadsDoc = await getDoc(filterUploadsDocRef);
+        let existingLabels = filterUploadsDoc.exists() ? filterUploadsDoc.data().labels : [];
+
+        // Filter out labels that already exist
+        const uniqueNewLabels = newLabels.filter(label => !existingLabels.includes(label));
+
+        // If there are new unique labels, add them to the array
+        if (uniqueNewLabels.length > 0) {
+            await setDoc(filterUploadsDocRef, {
+                labels: arrayUnion(...uniqueNewLabels)
+            }, { merge: true });
+        }
+    } catch (error) {
+        console.error('Error saving unique labels:', error);
+        throw error;
+    }
+};
 
 // Get All Images - By User
 export const getAllImages = (async () => {
