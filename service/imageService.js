@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
-import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { auth, db } from '../firebase';
 import { Alert } from 'react-native';
@@ -151,3 +151,37 @@ export const getAllImages = (async () => {
 })
 
 //All Tags - Save tags in firestore database
+
+export const getFilteredImages = async (filterLabel) => {
+    const uid = auth.currentUser.uid;    
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userImageDocRef = collection(userDocRef, 'imageUploads');
+        
+        // If filterLabel is 'All' or empty, return all images
+        if (!filterLabel || filterLabel === 'All') {
+            return getAllImages();
+        }
+
+        const q = query(userImageDocRef);
+        const filteredItems = [];
+        
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            // Check if the image's labels include the filter label (case-insensitive)
+            if (data.labels && data.labels.some(label => 
+                label.toLowerCase() === filterLabel.toLowerCase()
+            )) {
+                filteredItems.push({ ...data, id: doc.id });
+            }
+        });
+        
+        return filteredItems;
+        
+    } catch (error) {
+        console.error('Error in getFilteredImages:', error);
+        Alert.alert('Failed To Fetch Filtered Images');
+        return [];
+    }
+};

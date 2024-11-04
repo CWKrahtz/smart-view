@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
-import { getAllImages } from "../service/imageService";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View, ActivityIndicator } from "react-native"
+import { getAllImages, getFilteredImages } from "../service/imageService";
 import { useFocusEffect } from "@react-navigation/native";
+import { Picker } from "@react-native-picker/picker"
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
+
+import { getAllLabels } from "../service/labelServices";
 
 function AlbumScreen({ navigation }) {
 
     const [imageURL, setImageURL] = useState([]);
+
     const [imageData, setImageData] = useState([]);
+    const [labelFilters, setLabelFilters] = useState([]);
+    const [filter, setFilter] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
     useFocusEffect(
@@ -22,10 +29,12 @@ function AlbumScreen({ navigation }) {
     const handleGettingOfData = async () => {
         setIsLoading(true);
         var allData = await getAllImages();
+        var allLabels = await getAllLabels();
         setImageData(allData || []);  // Ensure compItems is an array
+        setLabelFilters(allLabels);
         setIsLoading(false);
 
-        const storage = getStorage();
+        // const storage = getStorage();
         // getDownloadURL(ref(storage, allData.image))
         // .then((url) => {
         //     // `url` is the download URL for 'images/stars.jpg'
@@ -47,31 +56,63 @@ function AlbumScreen({ navigation }) {
         console.log("image Data:", image)
     }
 
+    const handleFilterChange = async (itemValue) => {
+        setFilter(itemValue);
+        setIsLoading(true);
+        
+        try {
+            let filteredData;
+            if (itemValue === 'All') {  // Add an "All" option to show all images
+                filteredData = await getAllImages();
+            } else {
+                filteredData = await getFilteredImages(itemValue);
+            }
+            setImageData(filteredData || []);
+        } catch (error) {
+            console.error('Error filtering images:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.heading}>Uploads</Text>
-            <View style={styles.body}>
-
+            <Picker
+                style={styles.text}
+                selectedValue={filter}
+                onValueChange={(itemValue, itemIndex) =>
+                    handleFilterChange(itemValue)
+                    //get images by filter
+                    //apply new data to allData
+                }>
                 {
+                    labelFilters.map((lb) => {
+                        return (
+                            <Picker.Item key={lb} label={lb} value={lb} />
+                        )
+                    })
+                }
+
+            </Picker>
+            <View style={styles.body}>
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="#F8F8FF" />
+                ) : (
                     imageData.map((image) => {
-
-                        // console.log("Image: ",image)
-
                         return (
                             <View key={image.id}>
-                                {/* <Pressable onPress={() => {handleSingle(image)}}> */}
-                                <Pressable something="hellow" onPress={() => navigation.navigate('SingleImage',{ image })}>
-                                    <Image style={{ width: 200, height: 200 }}
+                                <Pressable onPress={() => navigation.navigate('SingleImage', { image })}>
+                                    <Image 
+                                        style={{ width: 200, height: 200 }}
                                         source={{ uri: `${image.image}` }}
-                                        props={image} 
+                                        props={image}
                                     />
                                 </Pressable>
                             </View>
                         );
                     })
-                }
-
-
+                )}
             </View>
         </ScrollView>
     );
