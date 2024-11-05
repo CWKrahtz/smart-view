@@ -6,7 +6,8 @@ import { analyzeImage, saveImage, uploadImageToFirebase } from '../service/image
 function DashboardScreen({ navigation }) {
 
     const [image, setImage] = useState(null);
-    const [labels, setLabels] = useState([])
+    const [labels, setLabels] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const pickImage = async () => {
 
@@ -31,8 +32,7 @@ function DashboardScreen({ navigation }) {
                 return;
             }
 
-            //new code
-            // Step 1: Upload image to Firebase Storage
+            setIsLoading(true)
             const imageURL = await uploadImageToFirebase(image);
 
             const result = await analyzeImage(image);
@@ -46,6 +46,9 @@ function DashboardScreen({ navigation }) {
         } catch (error) {
             alert('Error analyzing image: ' + error.message);
         }
+        finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -58,8 +61,10 @@ function DashboardScreen({ navigation }) {
                 <Pressable onPress={pickImage} style={styles.btn} >
                     <Text style={styles.btn_text}>Pick an image from your galary</Text>
                 </Pressable>
-                <Pressable onPress={handleAnalyzeImage} style={styles.btn} >
-                    <Text style={styles.btn_text}>Analyze Selected Image</Text>
+                <Pressable onPress={handleAnalyzeImage} style={[styles.btn, isLoading && styles.btn_disabled]} disabled={isLoading} >
+                    <Text style={styles.btn_text}>
+                        {isLoading ? 'Analyzing...' : 'Analyze Selected Image'}
+                    </Text>
                 </Pressable>
                 {labels.length > 0 ?
                     (
@@ -122,7 +127,8 @@ const styles = StyleSheet.create({
     image: {
         width: 300,
         height: 300,
-        margin: 25
+        borderRadius: 12,
+        margin: 15
     },
     image_container: {
         alignItems: 'center',
@@ -145,6 +151,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#29293D',
+    },
+    btn_disabled: {
+        opacity: 0.7,
     },
     label: {
         fontSize: 16,

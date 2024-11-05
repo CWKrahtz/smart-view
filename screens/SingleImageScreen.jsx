@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     heading: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 40
+        fontSize: 40,
+        marginBottom: 25
     },
     sub_container: {
         display: 'flex',
@@ -75,9 +76,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        width: 300,
+        width: '93%',
         height: 300,
-        margin: 25
+        margin: 10,
+        borderRadius: 12
     },
     image_container: {
         alignItems: 'center',

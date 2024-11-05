@@ -33,40 +33,16 @@ function AlbumScreen({ navigation }) {
         setImageData(allData || []);  // Ensure compItems is an array
         setLabelFilters(allLabels);
         setIsLoading(false);
-
-        // const storage = getStorage();
-        // getDownloadURL(ref(storage, allData.image))
-        // .then((url) => {
-        //     // `url` is the download URL for 'images/stars.jpg'
-
-        //     // console.log(allData);
-        //     setImageURL([...imageURL, url])
-
-        //     // Or inserted into an <img> element
-        //     // const img = document.getElementById('myimg');
-        //     // img.setAttribute('src', url);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
     };
-
-
-    const handleSingle = (image) => {
-        console.log("image Data:", image)
-    }
 
     const handleFilterChange = async (itemValue) => {
         setFilter(itemValue);
         setIsLoading(true);
-        
+
         try {
             let filteredData;
-            if (itemValue === 'All') {  // Add an "All" option to show all images
-                filteredData = await getAllImages();
-            } else {
-                filteredData = await getFilteredImages(itemValue);
-            }
+            filteredData = await getFilteredImages(itemValue);
+
             setImageData(filteredData || []);
         } catch (error) {
             console.error('Error filtering images:', error);
@@ -76,10 +52,12 @@ function AlbumScreen({ navigation }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <Text style={styles.heading}>Uploads</Text>
             <Picker
-                style={styles.text}
+                style={styles.picker}
+                dropdownIconColor="#F8F8FF" 
+                itemStyle={styles.pickerItem}
                 selectedValue={filter}
                 onValueChange={(itemValue, itemIndex) =>
                     handleFilterChange(itemValue)
@@ -95,26 +73,30 @@ function AlbumScreen({ navigation }) {
                 }
 
             </Picker>
-            <View style={styles.body}>
+            <ScrollView>
                 {isLoading ? (
                     <ActivityIndicator size="large" color="#F8F8FF" />
                 ) : (
-                    imageData.map((image) => {
-                        return (
-                            <View key={image.id}>
-                                <Pressable onPress={() => navigation.navigate('SingleImage', { image })}>
-                                    <Image 
-                                        style={{ width: 200, height: 200 }}
-                                        source={{ uri: `${image.image}` }}
-                                        props={image}
-                                    />
-                                </Pressable>
-                            </View>
-                        );
-                    })
+                    <View style={styles.image_container}>
+                        {
+                            imageData.map((image) => {
+                                return (
+                                    <View style={styles.image_wrap} key={image.id}>
+                                        <Pressable onPress={() => navigation.navigate('SingleImage', { image })}>
+                                            <Image
+                                                style={styles.image}
+                                                source={{ uri: `${image.image}` }}
+                                                props={image}
+                                            />
+                                        </Pressable>
+                                    </View>
+                                )
+                            })
+                        }
+                    </View>
                 )}
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -125,7 +107,7 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         paddingBottom: 24,
         paddingTop: 75,
-        backgroundColor: '#16161D',
+        backgroundColor: '#16161D'
     },
     heading: {
         color: 'white',
@@ -147,21 +129,26 @@ const styles = StyleSheet.create({
         textDecorationLine: true,
         fontWeight: 'bold'
     },
-    body: {
-        alignItems: 'center'
+    picker: {
+        color: '#F8F8FF',
+        backgroundColor: 'transparent',
+    },
+    pickerItem: {
+        color: '#F8F8FF',
     },
     image: {
-        width: 300,
-        height: 300,
-        margin: 25
+        width: '100%',
+        height: 150,
+        borderRadius: 8
     },
     image_container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-        backgroundColor: '#29293D',
-        width: '100%',
-        marginBottom: 24
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between'
+    },
+    image_wrap: {
+        width: '48%', // Allows for 2 images per row with some spacing
+        marginBottom: 10,
     },
     btn: {
         alignItems: 'center',
