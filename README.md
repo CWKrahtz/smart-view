@@ -41,10 +41,7 @@
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a>
           <ul>
-            <li><a href="#frontend-installation">Front-end Installation</a></li>
-            <li><a href="#server-side-installation">Backend-end Installation</a></li>
-            <li><a href="#server-side-installation">Backend-end Installation</a></li>
-            <li><a href="#server-side-installation">Backend-end Installation</a></li>
+            <li><a href="#frontend-installation">Installation</a></li>
           </ul>
         </li>
       </ul>
@@ -90,7 +87,6 @@ With each image being labeld users will be able to view all their previous uploa
 
 ### Installation
 
-   #### Frontend Installation
 1. Clone the frontend repo
    ```sh
    https://github.com/CWKrahtz/smart-view.git
