@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     },
     subheading_link: {
         color: '#6573B6',
-        textDecorationLine: true,
         fontWeight: 'bold'
     },
     inputrows: {

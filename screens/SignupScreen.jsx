@@ -22,7 +22,6 @@ function SignupScreen_copy({ navigation }) {
 
     //authhandler
     const authHandler = async () => {
-        // check all fields are entered
         if (!email || !password || !name) {
             Alert.alert("Error", "All fields are required.");
             return;
@@ -30,8 +29,8 @@ function SignupScreen_copy({ navigation }) {
 
         try {
             await handleSignUp(email, password, name);
-            Alert.alert("Success", "User registered successfully!");
-            navigation.navigate('Login'); // Navigate to login after successful registration
+            // Alert.alert("Success", "User registered successfully!");
+            navigation.navigate('Login');
         } catch (error) {
             Alert.alert("Error during sign up: ", error.message);
         }
@@ -118,7 +117,6 @@ const styles = StyleSheet.create({
     },
     subheading_link: {
         color: '#6573B6',
-        textDecorationLine: true,
         fontWeight: 'bold'
     },
     inputrows: {
