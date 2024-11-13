@@ -192,26 +192,26 @@ In the root of Smart View
   From the 4 users that tested the application (Cameron, Hannah, Eddie, and Erik) these are the feedback I received. For the tasks the users where given they gave the task a score of 5 (walk in the park).
 
   ### Surprices
-  _The speed and robustness_ - Cameron
-  _Single view selection of previous uploaded images_ - Erik
-  _I was surprised that the filter feature worked not that I doubted that it would but the fact that it was able to detect specific images out of all the images uploaded was very cool_ - Hannah
-  _No it was pretty straight forward_ - Eddie
+  - _"The speed and robustness"_ - Cameron
+  - _"Single view selection of previous uploaded images"_ - Erik
+  - _"I was surprised that the filter feature worked not that I doubted that it would but the fact that it was able to detect specific images out of all the images uploaded was very cool"_ - Hannah
+  - _"No it was pretty straight forward"_ - Eddie
 
   ### Likes
-  _The filtering feature to group images of similar elements_ - Cameron
-  _The filtering system of images that have similar labels._- Erik
-  _I really liked the filter feature that helps to detect the labels of the images I think this is very useful_ - Hannah
-  _I liked the way it labels and group similar images_ - Eddie
+  - _"The filtering feature to group images of similar elements"_ - Cameron
+  - _"The filtering system of images that have similar labels."_- Erik
+  - _"I really liked the filter feature that helps to detect the labels of the images I think this is very useful"_ - Hannah
+  - _"I liked the way it labels and group similar images"_ - Eddie
 
   ### Dislikes
-  _Not being able to scroll to see all the tags on the image upload page._ - Cameron
-  _Some more options for image selection, and unnecessary popups._ - Erik
-  _The only thing is the spacing on the label tags underneath the images can be slightly readjusted but other than that everything else is perfect_ - Hannah
-  _The lack of loaders to communicate something is happening in the background_ - Eddie
+  - _"Not being able to scroll to see all the tags on the image upload page."_ - Cameron
+  - _"Some more options for image selection, and unnecessary popups."_ - Erik
+  - _"The only thing is the spacing on the label tags underneath the images can be slightly readjusted but other than that everything else is perfect"_ - Hannah
+  - _"The lack of loaders to communicate something is happening in the background"_ - Eddie
 
   ### User Frustration
-  _"It was a little unclear after uploading an image to not see a major change in the call to action. perhaps changing the colours of the buttons or changing the text to 'select a different phot' to create a change in clarity"_ - Cameron
-  _I think the profile tab should be the last tab on the nav bar because I found myself clicking the middle button on the nav bar to go to the next page and expecting it to be the album page but instead it was the profile page which can be a bit confusing_ - Hannah
+  - _"It was a little unclear after uploading an image to not see a major change in the call to action. perhaps changing the colours of the buttons or changing the text to 'select a different phot' to create a change in clarity"_ - Cameron
+  - _I think the profile tab should be the last tab on the nav bar because I found myself clicking the middle button on the nav bar to go to the next page and expecting it to be the album page but instead it was the profile page which can be a bit confusing_ - Hannah
 
 
 ## Licence
